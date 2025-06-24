@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: myapp
+spec:
+  selector:
+    matchLabels:
+      app: myapp
+  template:
+    metadata:
+      labels:
+        app: myapp
+    spec:
+      containers:
+        - name: myapp
+          image: myapp:latest
+          imagePullPolicy: IfNotPresent
+          resources:
+            limits:
+              memory: "128Mi"
+              cpu: "1"
+          ports:
+            - containerPort: http
+          env:
+            - name: ENV_VAR_NAME
+              value: "value"
+          volumeMounts:
+            - name: myapp-volume
+              mountPath: /data
+      volumes:
+        - name: myapp-volume
+          persistentVolumeClaim:
+            claimName: myapp-pvc

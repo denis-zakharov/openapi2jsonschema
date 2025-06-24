@@ -67,3 +67,18 @@ without the server. For that I have a bash script,
 The output from running this script can be seen in the accompanying
 [instrumenta/kubernetes-json-schema](https://github.com/instrumenta/kubernetes-json-schema).
 
+# Fork
+
+Test dependencies:
+
+- pytest
+- pytest-datafiles
+
+```sh
+kubectl get --raw "/openapi/v2" > swagger.json
+python openapi2jsonschema/command.py --expanded --kubernetes --stand-alone --strict -o schemas/master-standalone-strict swagger.json
+#python openapi2jsonschema/command.py --kubernetes --stand-alone --strict -o schemas/master-standalone-strict swagger.json
+
+kubeconform -summary -output json -strict -schema-location schemas deployment.yaml
+kubeconform -output junit -strict -schema-location schemas deployment.yaml
+```
